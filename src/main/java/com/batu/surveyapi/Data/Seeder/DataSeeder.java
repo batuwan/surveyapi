@@ -30,7 +30,7 @@ public class DataSeeder implements CommandLineRunner {
             Role admin = new Role();
             admin.setName("ADMIN");
             Role user = new Role();
-            admin.setName("USER");
+            user.setName("USER");
             roleRepository.save(admin);
             roleRepository.save(user);
         }
@@ -44,6 +44,15 @@ public class DataSeeder implements CommandLineRunner {
             roles.add(roleRepository.findByName("ADMIN"));
             user1.setRoles(roles);
             userService.save(user1);
+
+            User user2 = new User();
+            user2.setUsername("enduser");
+            user2.setPassword("enduser12345");
+            user2.setEmail("end@user.com");
+            roles = new HashSet<>();
+            roles.add(roleRepository.findByName("USER"));
+            user2.setRoles(roles);
+            userService.save(user2);
         }
     }
 }
