@@ -57,6 +57,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http
                 .authorizeRequests()
+                .antMatchers(
+                        "/authenticate",
+                        "/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET).hasAnyRole("ADMIN")
                 .and()
                 .authorizeRequests().anyRequest().permitAll();
