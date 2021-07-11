@@ -1,6 +1,8 @@
 package com.batu.surveyapi.Data.Configurations;
 
+import com.batu.surveyapi.Data.TokenFilter;
 import com.batu.surveyapi.Data.UserDetails.SurveyApiUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,13 +12,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private TokenFilter tokenFilter;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -36,6 +42,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         return authProvider;
     }
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
 
@@ -57,6 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http
                 .authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers(
                         "/authenticate",
                         "/v2/api-docs",
@@ -67,7 +75,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/webjars/**").permitAll()
                 .antMatchers(HttpMethod.GET).hasAnyRole("ADMIN")
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests().anyRequest().permitAll();
+
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 }
