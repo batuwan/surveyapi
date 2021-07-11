@@ -5,6 +5,7 @@ import com.batu.surveyapi.Data.Models.AdminCreateUserDto;
 import com.batu.surveyapi.Data.Models.AuthRequest;
 import com.batu.surveyapi.Data.Models.AuthToken;
 import com.batu.surveyapi.Data.Models.UserDto;
+import com.batu.surveyapi.Data.Repositories.RoleRepository;
 import com.batu.surveyapi.Data.UserDetails.SurveyApiUserDetailsService;
 import com.batu.surveyapi.Services.TokenService;
 import com.batu.surveyapi.Services.UserService;
@@ -29,7 +30,8 @@ public class AuthController {
 
     @Autowired
     private TokenService tokenService;
-
+    @Autowired
+    RoleRepository roleRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -75,6 +77,11 @@ public class AuthController {
         } else {
             return ResponseEntity.badRequest().body("verify_fail");
         }
+    }
+
+    @GetMapping("/roleList")
+    public ResponseEntity<?> roleList(){
+        return ResponseEntity.ok(roleRepository.findAll());
     }
 
     //get SiteUrl for registration

@@ -66,7 +66,7 @@ public class SurveyController {
     }
 
     @PutMapping("/{topicId}/sendAnswer/{optionId}")
-    public ResponseEntity<?> sendAnswer(@PathVariable Long topicId, @PathVariable Long optionId){
+    public ResponseEntity<?> sendAnswer(@PathVariable Long topicId, @PathVariable Long optionId) throws Exception {
         Topic topic = surveyService.sendAnswer(topicId, optionId);
         return ResponseEntity.ok(topic);
     }

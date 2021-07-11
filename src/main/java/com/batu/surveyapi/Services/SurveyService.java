@@ -73,8 +73,9 @@ public class SurveyService {
         return topicRepository.findById(topicId).get().getOptions();
     }
 
-    public Topic sendAnswer(Long topicId, Long optionId) {
+    public Topic sendAnswer(Long topicId, Long optionId) throws Exception {
         Option option = optionRepository.findById(optionId).get();
+        if (!topicRepository.findById(topicId).get().isApproved()){throw new Exception();}
         option.setCount(option.getCount()+1);
         optionRepository.save(option);
 
