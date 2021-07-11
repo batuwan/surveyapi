@@ -78,11 +78,11 @@ public class SurveyService {
         option.setCount(option.getCount()+1);
         optionRepository.save(option);
 
-        return topicRepository.getById(topicId);
+        return topicRepository.findById(topicId).get();
     }
 
     public Topic getResults(Long topicId) {
-        return topicRepository.getById(topicId);
+        return topicRepository.findById(topicId).get();
     }
 
     public Long createTopic(CreateTopicRequest request) {
