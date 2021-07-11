@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -37,6 +34,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("Survey API")
                 .description("Survey App - Layermark Developer Assignment")
+        .contact(new Contact("Batuhan Karaman", "https://www.linkedin.com/in/batuhankaraman/", "batuhankaraman@gmail.com"))
                 .build();
     }
 
