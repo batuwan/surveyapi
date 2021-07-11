@@ -17,4 +17,5 @@ public class Option {
     @NotNull
     private String description;
     private Long count;
+    private Long topic_id;
 }

@@ -1,5 +1,6 @@
 package com.batu.surveyapi.Core.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,9 +18,10 @@ public class Topic {
     @GeneratedValue
     private Long id;
     @NotNull
-    private String name;
+    private String description;
     private boolean isApproved;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "topic_id")
     private List<Option> options = new ArrayList<>();
