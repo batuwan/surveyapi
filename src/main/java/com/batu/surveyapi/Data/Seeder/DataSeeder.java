@@ -40,6 +40,7 @@ public class DataSeeder implements CommandLineRunner {
             user1.setUsername("admin");
             user1.setPassword("admin12345");
             user1.setEmail("admin@admin.com");
+            user1.setEnabled(true);
             Set<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByName("ADMIN"));
             user1.setRoles(roles);
@@ -49,6 +50,7 @@ public class DataSeeder implements CommandLineRunner {
             user2.setUsername("enduser");
             user2.setPassword("enduser12345");
             user2.setEmail("end@user.com");
+            user2.setEnabled(true);
             roles = new HashSet<>();
             roles.add(roleRepository.findByName("USER"));
             user2.setRoles(roles);

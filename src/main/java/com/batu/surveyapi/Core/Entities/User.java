@@ -31,6 +31,10 @@ public class User {
     private String email;
     @NotNull
     private String password;
+    @Column(name = "verification_code")
+    private String verificationCode;
+    private boolean enabled;
+
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(

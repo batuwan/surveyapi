@@ -9,6 +9,7 @@ import com.batu.surveyapi.Data.UserDetails.SurveyApiUserDetailsService;
 import com.batu.surveyapi.Services.TokenService;
 import com.batu.surveyapi.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,8 +52,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDto userDto){
-        userService.register(userDto);
+    public ResponseEntity<?> register(@RequestBody UserDto userDto,  HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+        userService.register(userDto, getSiteURL(request));
         return ResponseEntity.ok(userDto);
     }
 
@@ -62,5 +67,19 @@ public class AuthController {
     public ResponseEntity<?> getUserById(@PathVariable long userId){
 
         return ResponseEntity.ok(userService.getUserById(userId));
+    }
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyUser(@Param("code") String code) {
+        if (userService.verifyAccount(code)) {
+            return ResponseEntity.ok("verify_success");
+        } else {
+            return ResponseEntity.badRequest().body("verify_fail");
+        }
+    }
+
+    //get SiteUrl for registration
+    private String getSiteURL(HttpServletRequest request) {
+        String siteURL = request.getRequestURL().toString();
+        return siteURL.replace(request.getServletPath(), "");
     }
 }

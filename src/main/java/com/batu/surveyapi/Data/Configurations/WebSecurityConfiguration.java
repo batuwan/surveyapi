@@ -64,7 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                .antMatchers("/api/auth/login", "/api/auth/register", "/api/auth/verify").permitAll()
                 .antMatchers(
                         "/authenticate",
                         "/v2/api-docs",
@@ -73,12 +73,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html*",
                         "/webjars/**").permitAll()
-                .antMatchers(HttpMethod.GET).hasAnyRole("ADMIN")
+                .antMatchers("/api/surveys/admin/**","/api/auth/createUserAsAdmin").hasAnyRole("ADMIN")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().anyRequest().permitAll();
+                .authorizeRequests().anyRequest().authenticated();
 
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
